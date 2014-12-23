@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+var $ = require('../lib')
+
+var dev = $.deps(undefined, ['devDependencies'])
+
+var unusedDev = []
+
+$.unused($.deps(), $.scanRequires()).forEach(function (e) {
+  if (dev.indexOf(e) !== -1) {
+    unusedDev.push(e)
+  } else {
+    console.log("npm uninstall --save     " + e)
+  }
+})
+
+unusedDev.forEach(function (e) {
+  console.log("npm uninstall --save-dev " + e)
+})
