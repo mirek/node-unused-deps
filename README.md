@@ -22,6 +22,20 @@ You should see similar output:
 
 An empty result means there are no unused npms in `package.json`.
 
+If you want to skip reporting of unused npms you can list them in a comment
+for example in `Gruntfile.coffee` (or `.js`):
+
+    # Skip unused-deps:
+    #
+    # require 'coffee-script'
+    # require 'grunt'
+    # require 'grunt-cli'
+    # require 'mocha-jenkins-reporter'
+    # require 'codo'
+    # require 'coffeelint'
+    # require 'hotnode'
+    # require 'mocha'
+
 # License
 
     The MIT License (MIT)
