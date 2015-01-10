@@ -23,7 +23,7 @@ scanRequires = (at = '.', map = {}, root = true) ->
     for e in requires fs.readFileSync(at, { encoding: 'utf8' })
       map[e] = true
 
-  if stat.isDirectory() and at not in [ 'node_modules' ]
+  if stat.isDirectory() and at not in [ '.git', '.svn', '.hg', '.idea', 'node_modules', 'bower_components']
     fs.readdirSync(at).forEach (e) ->
       scanRequires path.join(at, e), map, false
 
