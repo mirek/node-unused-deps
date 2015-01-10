@@ -12,7 +12,7 @@ requires = (src) ->
   re = /(require|loadNpmTasks)[\( ]+['"]([^\.][^'"]+)/g
   r = []
   while m = re.exec src
-    r.push m[2]
+    r.push m[2].split('/')[0] # First component only ('foo/bar' -> 'foo')
   r
 
 # Recursively scan all coffee and js files returning used requires.
