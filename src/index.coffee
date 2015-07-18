@@ -9,17 +9,46 @@ endsWithAny = (a, bs) ->
 # Returns a list of requires in source file by naive regex scan of requires
 # and grunt's loadNpmTasks.
 requires = (src) ->
-  re = /(require|loadNpmTasks)[\( ]+['"]([^\.][^'"]+)/g
+  re = /(import.*?from|require|loadNpmTasks)[\( ]+['"]([^\.][^'"]+)/g
   r = []
   while m = re.exec src
     r.push m[2].split('/')[0] # First component only ('foo/bar' -> 'foo')
   r
 
+# We want to be sync so we don't use it, maybe later.
+# asyncHead = (at, done) ->
+#   r = ''
+#   stream = fs.createReadStream at, { start: 0, end: 256 }
+#   stream.on 'data', (data) -> r += data
+#   stream.on 'error', (err) ->
+#     done err
+#   stream.on 'end', ->
+#     done null, r
+
+# Reads "head" of file (first ~256 bytes).
+# TODO: Don't read it twice if start/end doesn't work for readFileSync like it does for createReadStream.
+head = (at) ->
+  fs.readFileSync(at, { encoding: 'utf8', start: 0, end: 256 })[0...256]
+
+# Check if file is exec on unixy sys, on windows it's always exec.
+isExec = (at, stat = null) ->
+  if /^win/.test process.platform
+    true
+  else
+    (if stat? then stat else fs.statSync(at)).mode | 0o111
+
+# Returns true if file looks like node/coffee script.
+isNodeish = (at, stat) ->
+  if endsWithAny(at, [ '.coffee', '.js', '.es', '.es6' ])
+    true
+  else
+    isExec(at, stat) and /node|coffee/.test head(at)
+
 # Recursively scan all coffee and js files returning used requires.
 scanRequires = (at = '.', map = {}, root = true) ->
   stat = fs.statSync at
 
-  if stat.isFile() and endsWithAny at, [ '.coffee', '.js' ]
+  if stat.isFile() and isNodeish(at, stat)
     for e in requires fs.readFileSync(at, { encoding: 'utf8' })
       map[e] = true
 
@@ -57,9 +86,10 @@ unused = (a, b) ->
   ra
 
 module.exports = {
+  deps
   endsWithAny
+  isNodeish
   requires
   scanRequires
-  deps
   unused
 }
