@@ -1,3 +1,5 @@
 #!/usr/bin/env coffee
 
+require 'fs'
+
 console.log 1
