@@ -16,7 +16,7 @@
   "author": "Mirek Rusin http://github.com/mirek",
   "license": "MIT",
   "devDependencies": {
-    "coffee-script": "^1.8.0",
+    "coffee-script": "^1.9.3",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-codo": "^0.2.0",
