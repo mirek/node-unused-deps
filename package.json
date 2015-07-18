@@ -4,7 +4,7 @@
   "description": "Report unused npm packages in your nodejs project.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --compilers coffee:coffee-script/register spec/**/*.spec.coffee"
   },
   "bin": {
     "unused-deps": "bin/unused-deps"
