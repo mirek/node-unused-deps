@@ -1,6 +1,6 @@
 {
   "name": "unused-deps",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Report unused npm packages in your nodejs project.",
   "main": "lib/index.js",
   "scripts": {
