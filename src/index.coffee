@@ -28,7 +28,10 @@ requires = (src) ->
 # Reads "head" of file (first ~256 bytes).
 # TODO: Don't read it twice if start/end doesn't work for readFileSync like it does for createReadStream.
 head = (at) ->
-  fs.readFileSync(at, { encoding: 'utf8', start: 0, end: 256 })[0...256]
+  try
+    fs.readFileSync(at, { encoding: 'utf8', start: 0, end: 256 })[0...256]
+  catch
+    ''
 
 # Check if file is exec on unixy sys, on windows it's always exec.
 isExec = (at, stat = null) ->
